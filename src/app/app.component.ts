@@ -7,12 +7,14 @@ import { SpeechRecognitionService, SupportedLanguage } from './speech-recognitio
 import { NLUService, GeneratedQuestion, NLUResult } from './nlu.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { FollowupQuestionsComponent } from './followup-questions/followup-questions.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, FormsModule, FollowupQuestionsComponent],
+  imports: [RouterOutlet, CommonModule, FormsModule, MatFormFieldModule, MatInputModule, FollowupQuestionsComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

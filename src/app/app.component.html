@@ -21,12 +21,18 @@
     <div style="width: 100%; margin-bottom: 1.5rem;">
       <h3>Live Transcript:</h3>
       <div style="margin-bottom: 0.5rem; display: flex; gap: 1.5rem; align-items: center;">
-        <label>Doctor: <input [(ngModel)]="doctorName" style="width: 120px;" /></label>
-        <label>Patient/Family: <input [(ngModel)]="participantName" style="width: 120px;" /></label>
+        <mat-form-field appearance="fill" class="acko-mat-dark" style="width: 120px; margin-right: 1rem;">
+          <mat-label>Doctor</mat-label>
+          <input matInput [(ngModel)]="doctorName" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="acko-mat-dark" style="width: 120px;">
+          <mat-label>Patient/Family</mat-label>
+          <input matInput [(ngModel)]="participantName" />
+        </mat-form-field>
       </div>
       <div style="min-height: 60px; border: 1px solid #ccc; border-radius: 6px; padding: 0.75rem; background: #fafaff;">
         <span style="color:#1976d2; font-weight:bold;">{{ doctorName }}:</span>
-        <span>{{ transcript }}</span>
+        <span style="color: #444;">{{ transcript }}</span>
         <br />
         <span style="color:#388e3c; font-weight:bold;">{{ participantName }}</span>
       </div>
