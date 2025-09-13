@@ -1,19 +1,11 @@
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->
-<!-- * * * * * * * to get started with your project! * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <main class="main">
   <div class="content" style="flex-direction: column; align-items: center; max-width: 600px; margin: auto;">
     <h1 style="margin-bottom: 1rem; text-align: center;">{{ title }}</h1>
-    <div style="margin-bottom: 1.5rem;">
+    <!-- <div style="margin-bottom: 1.5rem;">
       <button (click)="startListening()" [disabled]="listening" style="margin-right: 1rem;">Start Transcription</button>
       <button (click)="stopListening()" [disabled]="!listening">Stop</button>
       <span *ngIf="listening" style="color: green; margin-left: 1rem;">Listening...</span>
-    </div>
+    </div> -->
       <div style="margin-bottom: 1.5rem; display: flex; align-items: center;">
         <button (click)="startListening()" [disabled]="listening" style="margin-right: 1rem;">Start Transcription</button>
         <button (click)="stopListening()" [disabled]="!listening">Stop</button>
@@ -28,13 +20,37 @@
       </div>
     <div style="width: 100%; margin-bottom: 1.5rem;">
       <h3>Live Transcript:</h3>
-      <div style="min-height: 60px; border: 1px solid #ccc; border-radius: 6px; padding: 0.75rem; background: #fafaff;">{{ transcript }}</div>
+      <div style="margin-bottom: 0.5rem; display: flex; gap: 1.5rem; align-items: center;">
+        <label>Doctor: <input [(ngModel)]="doctorName" style="width: 120px;" /></label>
+        <label>Patient/Family: <input [(ngModel)]="participantName" style="width: 120px;" /></label>
+      </div>
+      <div style="min-height: 60px; border: 1px solid #ccc; border-radius: 6px; padding: 0.75rem; background: #fafaff;">
+        <span style="color:#1976d2; font-weight:bold;">{{ doctorName }}:</span>
+        <span>{{ transcript }}</span>
+        <br />
+        <span style="color:#388e3c; font-weight:bold;">{{ participantName }}</span>
+      </div>
     </div>
     <div style="width: 100%;">
-      <h3>Reflexive Questions:</h3>
-      <ul>
-        <li *ngFor="let q of questions">{{ q }}</li>
-      </ul>
+      <h3>Follow-up Questions:</h3>
+      <app-followup-questions
+        [questions]="questions"
+        [editingIndex]="editingIndex"
+        [editedQuestion]="editedQuestion"
+        (accept)="acceptQuestion($event)"
+        (edit)="startEdit($event)"
+        (save)="saveEdit($event)"
+        (cancel)="cancelEdit()"
+        (swap)="swapQuestion($event)">
+      </app-followup-questions>
+    </div>
+    <div *ngIf="sentiment === 'confused' || sentiment === 'distressed'" style="margin-top:1rem; padding:0.75rem; border:1px solid #e57373; background:#ffebee; color:#c62828; border-radius:6px;">
+      <strong>Alert for Doctor:</strong>
+      <span *ngIf="sentiment === 'confused'">The customer appears <b>confused</b> or is having trouble understanding.</span>
+      <span *ngIf="sentiment === 'distressed'">The customer appears <b>distressed</b> or emotionally upset.</span>
+    </div>
+    <div *ngIf="sentiment !== 'confused' && sentiment !== 'distressed'" style="margin-top:1rem; color:#388e3c;">
+      <span>Sentiment: {{ sentiment }}</span>
     </div>
   </div>
 </main>
