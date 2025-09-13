@@ -57,7 +57,7 @@
         </div>
         <div style="margin-top:1rem; width:100%;">
           <h4>Live Transcript (Video Mode):</h4>
-          <div style="min-height: 60px; border: 1px solid #ccc; border-radius: 6px; padding: 0.75rem; background: #fafaff;">{{ transcript }}</div>
+          <div style="min-height: 60px; border: 1px solid #ccc; border-radius: 6px; padding: 0.75rem; background: #fafaff; color: #444;">{{ transcript }}</div>
         </div>
       </div>
       <div style="width: 100%; margin-bottom: 1.5rem">
@@ -90,7 +90,7 @@
          <span style="color: #388e3c; font-weight: bold">{{
             participantName
           }} :</span>
-          <span>{{ transcript }}</span>
+          <span style="color: #444;">{{ transcript }}</span>
           <br />
            <span style="color: #1976d2; font-weight: bold"
             >{{ doctorName }}:</span
@@ -140,3 +140,21 @@
     </div>
   </main>
 </div>
+
+<div style="width: 100%; margin-bottom: 1.5rem;">
+      <h3>Live Transcript:</h3>
+      <div style="margin-bottom: 0.5rem; display: flex; gap: 1.5rem; align-items: center;">
+        <mat-form-field appearance="fill" class="acko-mat-dark" style="width: 120px; margin-right: 1rem;">
+          <mat-label>Doctor</mat-label>
+          <input matInput [(ngModel)]="doctorName" />
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="acko-mat-dark" style="width: 120px;">
+          <mat-label>Patient/Family</mat-label>
+          <input matInput [(ngModel)]="participantName" />
+        </mat-form-field>
+      </div>
+      <div style="min-height: 60px; border: 1px solid #ccc; border-radius: 6px; padding: 0.75rem; background: #fafaff;">
+        <span style="color:#1976d2; font-weight:bold;">{{ doctorName }}:</span>
+        <span style="color: #444;">{{ transcript }}</span>
+        <br />
+        <span style="color:#388e3c; font-weight:bold;">{{ participantName }}</span>

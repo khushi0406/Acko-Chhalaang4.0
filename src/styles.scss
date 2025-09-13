@@ -1,1 +1,28 @@
-/* You can add global styles to this file, and also import other style files */
+
+
+/* Global linear-gradient theme */
+:root {
+	--acko-theme-gradient: linear-gradient(90deg, #4719A2, #3C3409);
+}
+
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+body, .mat-app-background {
+	background: #181828 !important;
+	color: #fff !important;
+}
+
+.acko-mat-dark .mat-form-field-appearance-fill .mat-form-field-flex {
+	background: #23234a !important;
+	color: #222 !important;
+}
+
+.mat-form-field-label, .mat-input-element, .mat-select-value-text {
+	color: #222 !important;
+}
+
+.mat-input-element, .mat-select-value {
+	background: #eaeaea !important;
+	color: #222 !important;
+}
+

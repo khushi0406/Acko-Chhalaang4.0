@@ -2,13 +2,15 @@
   <li *ngFor="let q of questions; let i = index" style="margin-bottom: 1rem; border: 1px solid #e0e0e0; border-radius: 6px; padding: 0.75rem; background: #f9f9fb; position: relative;">
     <span style="font-weight:bold; color:#512da8;">[{{ q.type }}]</span>
     <ng-container *ngIf="editingIndex !== i">
-      <span> {{ q.question }} </span>
+      <span style="color: #444;"> {{ q.question }} </span>
       <button (click)="accept.emit(i)" style="margin-left:1rem; color:#fff; background:#388e3c; border:none; border-radius:4px; padding:2px 8px;">Accept</button>
       <button (click)="edit.emit(i)" style="margin-left:0.5rem; color:#fff; background:#1976d2; border:none; border-radius:4px; padding:2px 8px;">Edit</button>
       <button (click)="swap.emit(i)" style="margin-left:0.5rem; color:#fff; background:#fbc02d; border:none; border-radius:4px; padding:2px 8px;">Swap</button>
     </ng-container>
     <ng-container *ngIf="editingIndex === i">
-      <input [(ngModel)]="questions[i].question" style="width:60%; margin-right:0.5rem;" />
+      <mat-form-field appearance="fill" class="acko-mat-dark" style="width:60%; margin-right:0.5rem; color: #ffffff;">
+        <input matInput [(ngModel)]="questions[i].question" placeholder="Edit question" />
+      </mat-form-field>
       <button (click)="save.emit(i)" style="color:#fff; background:#388e3c; border:none; border-radius:4px; padding:2px 8px;">Save</button>
       <button (click)="cancel.emit()" style="margin-left:0.5rem; color:#fff; background:#b71c1c; border:none; border-radius:4px; padding:2px 8px;">Cancel</button>
     </ng-container>
