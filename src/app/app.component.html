@@ -1,56 +1,142 @@
-<main class="main">
-  <div class="content" style="flex-direction: column; align-items: center; max-width: 600px; margin: auto;">
-    <h1 style="margin-bottom: 1rem; text-align: center;">{{ title }}</h1>
-    <!-- <div style="margin-bottom: 1.5rem;">
+<div class="container-fluid">
+  <main class="main">
+    <div
+      class="content"
+      style="
+        flex-direction: column;
+        align-items: center;
+        margin: auto;
+      "
+    >
+      <h1 style="margin-bottom: 1rem; text-align: center">{{ title }}</h1>
+      <!-- <div style="margin-bottom: 1.5rem;">
       <button (click)="startListening()" [disabled]="listening" style="margin-right: 1rem;">Start Transcription</button>
       <button (click)="stopListening()" [disabled]="!listening">Stop</button>
       <span *ngIf="listening" style="color: green; margin-left: 1rem;">Listening...</span>
     </div> -->
-      <div style="margin-bottom: 1.5rem; display: flex; align-items: center;">
-        <button (click)="startListening()" [disabled]="listening" style="margin-right: 1rem;">Start Transcription</button>
+      <div style="margin-bottom: 1.5rem; display: flex; align-items: center">
+        <div style="margin-right:2rem;">
+          <label><input type="radio" name="mode" [(ngModel)]="mode" value="audio" /> Audio Only</label>
+          <label style="margin-left:1rem;"><input type="radio" name="mode" [(ngModel)]="mode" value="video" /> Video + Audio</label>
+        </div>
+        <button
+          (click)="startListening()"
+          [disabled]="listening"
+          style="margin-right: 1rem"
+        >
+          Start Transcription
+        </button>
         <button (click)="stopListening()" [disabled]="!listening">Stop</button>
-        <span *ngIf="listening" style="color: green; margin-left: 1rem;">Listening...</span>
-        <div style="margin-left: 2rem;">
+        <span *ngIf="listening" style="color: green; margin-left: 1rem"
+          >Listening...</span
+        >
+        <div style="margin-left: 2rem">
           <label for="lang-select">Language:</label>
-          <select id="lang-select" [(ngModel)]="language" (change)="switchLanguage(language)">
+          <select
+            id="lang-select"
+            [(ngModel)]="language"
+            (change)="switchLanguage(language)"
+          >
             <option value="en-IN">English (India)</option>
             <option value="hi-IN">Hindi (India)</option>
           </select>
         </div>
       </div>
-    <div style="width: 100%; margin-bottom: 1.5rem;">
-      <h3>Live Transcript:</h3>
-      <div style="margin-bottom: 0.5rem; display: flex; gap: 1.5rem; align-items: center;">
-        <label>Doctor: <input [(ngModel)]="doctorName" style="width: 120px;" /></label>
-        <label>Patient/Family: <input [(ngModel)]="participantName" style="width: 120px;" /></label>
+      <div *ngIf="mode === 'video'" style="width:100%; margin-bottom:1.5rem;">
+        <h3>Video Call (Local Preview)</h3>
+        <div style="width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+          <video id="videoEl" width="400" height="300" autoplay playsinline style="border-radius:8px; background:#000;"></video>
+          <div style="margin-top:0.5rem; display:flex; gap:0.5rem;">
+            <button (click)="rewindVideo()">&#9664; 10s</button>
+            <button (click)="playVideo()">Play</button>
+            <button (click)="pauseVideo()">Pause</button>
+            <button (click)="forwardVideo()">10s &#9654;</button>
+            <button (click)="startVideo()">Start Video</button>
+            <button (click)="stopVideo()">Stop Video</button>
+          </div>
+        </div>
+        <div style="margin-top:1rem; width:100%;">
+          <h4>Live Transcript (Video Mode):</h4>
+          <div style="min-height: 60px; border: 1px solid #ccc; border-radius: 6px; padding: 0.75rem; background: #fafaff;">{{ transcript }}</div>
+        </div>
       </div>
-      <div style="min-height: 60px; border: 1px solid #ccc; border-radius: 6px; padding: 0.75rem; background: #fafaff;">
-        <span style="color:#1976d2; font-weight:bold;">{{ doctorName }}:</span>
-        <span>{{ transcript }}</span>
-        <br />
-        <span style="color:#388e3c; font-weight:bold;">{{ participantName }}</span>
+      <div style="width: 100%; margin-bottom: 1.5rem">
+        <h3>Live Transcript:</h3>
+        <div
+          style="
+            margin-bottom: 0.5rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+          "
+        >
+          <label
+            >Doctor: <input [(ngModel)]="doctorName" style="width: 120px"
+          /></label>
+          <label
+            >Patient/Family:
+            <input [(ngModel)]="participantName" style="width: 120px"
+          /></label>
+        </div>
+        <div
+          style="
+            min-height: 60px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 0.75rem;
+            background: #fafaff;
+          "
+        >
+         <span style="color: #388e3c; font-weight: bold">{{
+            participantName
+          }} :</span>
+          <span>{{ transcript }}</span>
+          <br />
+           <span style="color: #1976d2; font-weight: bold"
+            >{{ doctorName }}:</span
+          >
+        </div>
+      </div>
+      <div style="width: 100%">
+        <h3>Follow-up Questions:</h3>
+        <app-followup-questions
+          [questions]="questions"
+          [editingIndex]="editingIndex"
+          [editedQuestion]="editedQuestion"
+          (accept)="acceptQuestion($event)"
+          (edit)="startEdit($event)"
+          (save)="saveEdit($event)"
+          (cancel)="cancelEdit()"
+          (swap)="swapQuestion($event)"
+        >
+        </app-followup-questions>
+      </div>
+      <div
+        *ngIf="sentiment === 'confused' || sentiment === 'distressed'"
+        style="
+          margin-top: 1rem;
+          padding: 0.75rem;
+          border: 1px solid #e57373;
+          background: #ffebee;
+          color: #c62828;
+          border-radius: 6px;
+        "
+      >
+        <strong>Alert for Doctor:</strong>
+        <span *ngIf="sentiment === 'confused'"
+          >The customer appears <b>confused</b> or is having trouble
+          understanding.</span
+        >
+        <span *ngIf="sentiment === 'distressed'"
+          >The customer appears <b>distressed</b> or emotionally upset.</span
+        >
+      </div>
+      <div
+        *ngIf="sentiment !== 'confused' && sentiment !== 'distressed'"
+        style="margin-top: 1rem; color: #388e3c"
+      >
+        <span>Sentiment: {{ sentiment }}</span>
       </div>
     </div>
-    <div style="width: 100%;">
-      <h3>Follow-up Questions:</h3>
-      <app-followup-questions
-        [questions]="questions"
-        [editingIndex]="editingIndex"
-        [editedQuestion]="editedQuestion"
-        (accept)="acceptQuestion($event)"
-        (edit)="startEdit($event)"
-        (save)="saveEdit($event)"
-        (cancel)="cancelEdit()"
-        (swap)="swapQuestion($event)">
-      </app-followup-questions>
-    </div>
-    <div *ngIf="sentiment === 'confused' || sentiment === 'distressed'" style="margin-top:1rem; padding:0.75rem; border:1px solid #e57373; background:#ffebee; color:#c62828; border-radius:6px;">
-      <strong>Alert for Doctor:</strong>
-      <span *ngIf="sentiment === 'confused'">The customer appears <b>confused</b> or is having trouble understanding.</span>
-      <span *ngIf="sentiment === 'distressed'">The customer appears <b>distressed</b> or emotionally upset.</span>
-    </div>
-    <div *ngIf="sentiment !== 'confused' && sentiment !== 'distressed'" style="margin-top:1rem; color:#388e3c;">
-      <span>Sentiment: {{ sentiment }}</span>
-    </div>
-  </div>
-</main>
+  </main>
+</div>
